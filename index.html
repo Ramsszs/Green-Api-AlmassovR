@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GREEN-API Page</title>
+</head>
+
+<body>
+    <h1>GREEN-API Methods Almassov Ramazan</h1>
+    <table border="1">
+        <tr>
+            <th>Column 1
+            <div class="getSettings">
+                <!-- Поля для ввода параметров подключения -->
+                <label for="idInstance">ID Instance:</label>
+                <input type="text" id="idInstance" value="7103906491"><br><br>
+                <label for="apiToken">API Token Instance:</label>
+                <input type="text" id="apiToken" value="c40e627ecf5a442890fec24be21b153c7b787770d65942c59d"><br><br>
+                
+                <!-- Кнопка для вызова метода API getSettings -->
+                <button onclick="getSettings()">getSettings</button>
+            </div>
+            <div class="getStateInstance">
+                <button onclick="getStateInstance()">getStateInstance</button>
+            </div>
+            <div class="sent massage">
+                <!-- Поле для сообщение -->
+                <div>
+                    <h2>message:</h2>
+                    <label for="message">Message:</label><br>
+                    <textarea id="message" rows="4" cols="50"></textarea><br><br>
+                </div>                
+                <!-- Кнопка для вызова метода API sendMessage -->
+                <button onclick="sendMessage()">sendMessage</button>
+                
+                
+            </div>
+            <div class="sendFileByUrl">                
+                <!-- Поле для ввода URL файла -->
+                <label for="fileUrl">File URL:</label><br>
+                <input type="text" id="fileUrl"
+                    value="https://avatars.mds.yandex.net/get-pdb/477388/77f64197-87d2-42cf-9305-14f49c65f1da/s375"><br><br>                
+                <!-- Поле для ввода имени файла -->
+                <label for="fileName">File Name:</label><br>
+                <input type="text" id="fileName" value="horse.png"><br><br>
+                
+                <!-- Поле для ввода подписи к файлу -->
+                <label for="caption">Caption:</label><br>
+                <input type="text" id="caption" value="лошадка"><br><br>
+                <!-- Кнопка для вызова метода API sendFileByUrl -->
+                <button onclick="sendFileByUrl()">sendFileByUrl</button>
+            </div>
+        </th>
+            <th>Column 2
+                <!-- Поле для вывода ответа метода API -->
+                <div>
+                    <h2>Response:</h2>
+                    <textarea id="responseField" readonly rows="10" cols="50"></textarea>
+                    
+                </div>
+
+            </th>
+        
+    </table>
+
+    
+
+   
+
+    <script>
+        // Функция для вызова метода getSettings
+        function getSettings() {
+            var idInstance = document.getElementById('idInstance').value;
+            var apiToken = document.getElementById('apiToken').value;
+            var url = `https://api.green-api.com/waInstance${idInstance}/getSettings/${apiToken}`;
+    
+        
+        
+
+            // Выполнение запроса к GREEN-API с помощью библиотеки requests
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('responseField').value = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getStateInstance() {
+
+            var idInstance = document.getElementById('idInstance').value;
+            var apiToken = document.getElementById('apiToken').value;
+            var url = `https://api.green-api.com/waInstance${idInstance}/getStateInstance/${apiToken}`;
+
+            // Выполнение запроса к GREEN-API с помощью библиотеки requests
+            fetch(url)
+            .then(response => response.json())
+            .then(data => {
+            document.getElementById('responseField').value = JSON.stringify(data, null, 2);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        function sendMessage() {
+                var idInstance = document.getElementById('idInstance').value;
+                var apiToken = document.getElementById('apiToken').value;
+                var url = `https://api.green-api.com/waInstance${idInstance}/sendMessage/${apiToken}`;
+
+                // Данные для отправки в теле запроса
+                var payload = {
+                    chatId: "11001234567@c.us",
+                    message: "I use Green-API to send this message to you!"
+                };
+
+                // Выполнение запроса к GREEN-API с помощью библиотеки requests
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('responseField').value = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        function sendFileByUrl() {
+                var idInstance = document.getElementById('idInstance').value;
+                var apiToken = document.getElementById('apiToken').value;
+                var fileUrl = document.getElementById('fileUrl').value;
+                var fileName = document.getElementById('fileName').value;
+                var caption = document.getElementById('caption').value;
+                var url = `https://api.green-api.com/waInstance${idInstance}/sendFileByUrl/${apiToken}`;
+
+                // Данные для отправки в теле запроса
+                var payload = {
+                    chatId: "11001234567@c.us",
+                    urlFile: fileUrl,
+                    fileName: fileName,
+                    caption: caption
+                };
+
+                // Выполнение запроса к GREEN-API с помощью библиотеки requests
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('responseField').value = JSON.stringify(data, null, 2);
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+    
+    </script>
+</body>
+
+</html>
